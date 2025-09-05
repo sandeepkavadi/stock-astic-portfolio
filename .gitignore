@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+
+# Environment
+.env
+.venv
+venv/
+env/
+
+# Build artifacts
+*.egg-info/
+dist/
+build/
+
+# Schwab token
+token.json
+schwab_config.json
+
+# Watchlist
+watchlist.txt

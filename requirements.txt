@@ -1,0 +1,6 @@
+plotly
+dash
+pandas
+requests
+schwab-py
+yfinance
