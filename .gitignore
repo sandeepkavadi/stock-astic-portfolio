@@ -19,3 +19,9 @@ schwab_config.json
 
 # Watchlist
 watchlist.txt
+
+# API Keys
+.ALPHA_VANTAGE_KEY.txt
+
+# Cache
+cache/
