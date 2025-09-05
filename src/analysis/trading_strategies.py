@@ -104,6 +104,39 @@ def stochastic_oscillator_strategy(df: pd.DataFrame, overbought_level: int = 80,
                               (df['%K'] > overbought_level)
     return df
 
+def combine_signals(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Combines buy/sell signals from multiple strategies.
+
+    A 'strong_buy_signal' is generated if at least two buy signals are present
+    and no sell signals are present from any strategy.
+    A 'strong_sell_signal' is generated if at least two sell signals are present
+    and no buy signals are present from any strategy.
+
+    Args:
+        df: A pandas DataFrame containing individual strategy signals
+            (e.g., 'buy_signal', 'sell_signal', 'rsi_buy_signal', etc.).
+
+    Returns:
+        A DataFrame with 'strong_buy_signal' and 'strong_sell_signal' columns (boolean).
+    """
+    # Initialize combined signals to False
+    df['strong_buy_signal'] = False
+    df['strong_sell_signal'] = False
+
+    # Count buy and sell signals for each row
+    buy_signal_columns = [col for col in df.columns if 'buy_signal' in col and col != 'strong_buy_signal']
+    sell_signal_columns = [col for col in df.columns if 'sell_signal' in col and col != 'strong_sell_signal']
+
+    df['buy_signal_count'] = df[buy_signal_columns].sum(axis=1)
+    df['sell_signal_count'] = df[sell_signal_columns].sum(axis=1)
+
+    # Define combination logic
+    df['strong_buy_signal'] = (df['buy_signal_count'] >= 2) & (df['sell_signal_count'] == 0)
+    df['strong_sell_signal'] = (df['sell_signal_count'] >= 2) & (df['buy_signal_count'] == 0)
+
+    return df
+
 if __name__ == '__main__':
     # Create a sample DataFrame for testing
     data = {
@@ -152,6 +185,9 @@ if __name__ == '__main__':
     # Apply Stochastic Oscillator strategy
     df = stochastic_oscillator_strategy(df)
 
+    # Combine signals
+    df = combine_signals(df)
+
     print("SMA Crossover Signals:")
     print(df[['close', 'sma_2', 'sma_3', 'buy_signal', 'sell_signal']])
     print("\nRSI Signals:")
@@ -162,3 +198,5 @@ if __name__ == '__main__':
     print(df[['close', 'upper_band', 'lower_band', 'bb_buy_signal', 'bb_sell_signal']])
     print("\nStochastic Oscillator Signals:")
     print(df[['close', '%K', '%D', 'stoch_buy_signal', 'stoch_sell_signal']])
+    print("\nCombined Signals:")
+    print(df[['close', 'buy_signal_count', 'sell_signal_count', 'strong_buy_signal', 'strong_sell_signal']])

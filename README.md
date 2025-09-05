@@ -28,7 +28,7 @@ This application is designed to track stock market data, identify potential trad
     - **Stochastic Oscillator Strategy:** Buy/sell signals based on %K and %D line crossovers and overbought/oversold levels.
 
 ### 4. Portfolio Management
-- **Schwab API Integration:** Connects to the Schwab Developer API to fetch real-time portfolio positions.
+- **Schwab API Integration:** Connects to the Schwab Developer API to fetch real-time portfolio positions and transaction history from all linked accounts.
 - **Portfolio Overview:** Displays current stock holdings and calculates the total market value of the portfolio.
 
 ### 5. Interactive Dashboard (Built with Dash and Plotly)
@@ -38,8 +38,9 @@ This application is designed to track stock market data, identify potential trad
     - **Symbol Validation:** Validates new stock symbols against Alpha Vantage/yfinance to ensure they are legitimate.
     - **Interactive Charts:** Displays candlestick charts with overlaid technical indicators (SMA, EMA, Bollinger Bands, RSI, MACD, Stochastic Oscillator) and visual buy/sell signals from implemented strategies.
 - **Portfolio Performance Tab:**
-    - Displays a table of current stock positions fetched from the Schwab API.
+    - Displays a table of current stock positions fetched from the Schwab API, including Account ID for each position.
     - Shows the total market value of the portfolio.
+    - Identifies and displays long-term stock holdings (over 1 year old) based on trade history for tax implications.
 
 ## Technology Stack
 - **Backend/Logic:** Python 3.x
@@ -72,4 +73,4 @@ This application is designed to track stock market data, identify potential trad
     - Follow the prompts to log in and authorize. Your Schwab credentials will be saved to `schwab_config.json`.
 5.  **Run the application:**
     `python3 -m src.dashboard.app`
-    Open the URL displayed in your terminal (e.g., `http://127.0.0.1:8050/`) in your web browser.
+    Open the URL displayed in your terminal (e.g., `http://127.0.0.1:8050/` or `http://127.0.0.1:8051/`) in your web browser. The application will now automatically find an available port starting from 8050.

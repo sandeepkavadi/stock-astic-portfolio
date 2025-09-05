@@ -25,3 +25,6 @@ watchlist.txt
 
 # Cache
 cache/
+
+# Schwab API Cache
+schwab_cache/

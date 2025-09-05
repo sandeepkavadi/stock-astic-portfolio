@@ -3,12 +3,12 @@ from dash.dependencies import Input, Output, State
 from dash import html, dcc # Added dcc
 from src.data.market_data import get_daily_data
 from src.analysis.technical_analysis import calculate_sma, calculate_ema, calculate_rsi, calculate_macd, calculate_bollinger_bands, calculate_stochastic_oscillator
-from src.analysis.trading_strategies import sma_crossover_strategy, rsi_strategy, macd_crossover_strategy, bollinger_bands_strategy, stochastic_oscillator_strategy
+from src.analysis.trading_strategies import sma_crossover_strategy, rsi_strategy, macd_crossover_strategy, bollinger_bands_strategy, stochastic_oscillator_strategy, combine_signals
 from src.dashboard.visualizations import plot_stock_data
 from src.dashboard.layouts import portfolio_performance_layout, watchlist_layout
 from src.config import get_alpha_vantage_api_key
 from src.utils import read_watchlist, write_watchlist
-from src.trading.schwab import get_positions # Import get_positions
+from src.trading.schwab_api import get_positions # Changed import
 
 def is_valid_symbol(symbol, api_key):
     try:
@@ -50,6 +50,9 @@ def register_callbacks(app):
         df = macd_crossover_strategy(df)
         df = bollinger_bands_strategy(df)
         df = stochastic_oscillator_strategy(df)
+
+        # Combine signals
+        df = combine_signals(df)
 
         fig = plot_stock_data(df, symbol)
         return fig
